@@ -102,7 +102,7 @@ oslo.config==7.0.0
 oslo.i18n==3.25.1
 oslo.serialization==2.29.3
 oslo.utils==3.42.1
-paramiko==2.4.1
+paramiko==2.10.1
 Paste==3.3.0
 PasteDeploy==2.1.0
 pathlib2==2.3.2
