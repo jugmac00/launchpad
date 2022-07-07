@@ -384,7 +384,7 @@ class TestAsyncCIBuildBehaviour(StatsMixin, TestCIBuildBehaviourBase):
                     "miniconda_conda_channel": "https://user:pass@canonical.example.com/artifactory/soss-conda-stable-local/",  # noqa: E501
                     "foo": "bar",
                 }),
-
+            "secrets": Equals({"soss_read_auth": "user:pass"})
             }))
 
     @defer.inlineCallbacks
