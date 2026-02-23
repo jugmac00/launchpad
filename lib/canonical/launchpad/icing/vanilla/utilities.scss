@@ -1,0 +1,12 @@
+.u-flex--row {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: flex-start;
+  gap: var(--dimension-spacing-inline-xs);
+}
+
+.u-inline-block {
+  width: 1lh;
+  height: 1lh;
+}
