@@ -24,6 +24,7 @@
     <li
       class="p-list__item"
       tal:condition="overview_menu/subscribe_to_bug_mail/enabled|overview_menu/subscribe/enabled|nothing"
+      id="involvement-1"
     >
       <a
         tal:condition="overview_menu/subscribe_to_bug_mail/enabled|nothing"
