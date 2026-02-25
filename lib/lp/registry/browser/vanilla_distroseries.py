@@ -110,7 +110,13 @@ class VanillaDistroSeriesView(
 
     @property
     def packages_summary_24h(self):
-        """Return the packages summary for the last 24 hours."""
+        """Return the packages summary for the last 24 hours.
+
+        XXX: Ideally this query logic would live in
+        `IBinaryPackageBuildSet` (e.g. `getBuildsForDistro`) with a
+        search-params object similar to `BugTaskSearchParams`, rather
+        than in the view. That refactoring is out of scope for now.
+        """
         store = IStore(BinaryPackageBuild)
         cutoff = datetime.now(timezone.utc) - timedelta(hours=24)
         base_clauses = [
