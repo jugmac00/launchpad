@@ -48,7 +48,9 @@
       </div>
     </div>
     <div class="links">
-      <div tal:replace="structure context/@@+vanilla-distroseries-summary-links" />
+      <div
+        tal:replace="structure context/@@+vanilla-distroseries-summary-links"
+      />
     </div>
     <div class="statistics">
       <dl class="description-list">
@@ -59,7 +61,7 @@
               <img
                 tal:attributes="src context/distribution/image:logo_src"
                 alt="Distribution icon"
-                class="u-margin-right-xs u-inline-block"
+                class="u-margin-right-xs u-inline-image"
               />
               <span tal:content="context/distribution/displayname">
                 Ubuntu
@@ -112,7 +114,7 @@
                   <img
                     tal:attributes="src driver/image:logo_src"
                     alt="Driver icon"
-                    class="u-inline-block"
+                    class="u-inline-image"
                   />
                   <span tal:content="driver/displayname"> driver </span>
                 </a>
@@ -121,12 +123,12 @@
           </dd>
         </div>
         <div class="description-list__item">
-          <dt class="u-flex--row">
-            <span>Release Manager</span>
+          <dt class="u-flex--row" aria-labelledby="release-manager-label">
+            <span id="release-manager-label">Release Manager</span>
             <a
-              tal:attributes="href context/menu:overview/driver/url;
-                title context/menu:overview/driver/summary;"
+              tal:attributes="href context/menu:overview/driver/url"
               tal:condition="context/menu:overview/driver/enabled"
+              title="Appoint driver"
             >
               <i class="p-icon--edit"></i>
             </a>
@@ -168,7 +170,7 @@
           </dd>
         </div>
       </dl>
-      <hr class="p-rule">
+      <hr class="p-rule" />
       <dl class="description-list is-stats">
         <div class="description-list__stat">
           <div class="description-list__item">
@@ -185,7 +187,9 @@
           </div>
           <div class="description-list__item">
             <dt>In progress</dt>
-            <dd tal:content="view/bugs_summary/inprogress_bugs_count/fmt:intcomma">
+            <dd
+              tal:content="view/bugs_summary/inprogress_bugs_count/fmt:intcomma"
+            >
               0
             </dd>
           </div>
@@ -201,16 +205,29 @@
           <div class="description-list__item">
             <dt>Packages built (24h)</dt>
             <dd>
-              <span class="p-heading--3" tal:content="string:${view/packages_summary_24h/built_packages_percentage} %"> 0% </span>
+              <span
+                class="p-heading--3"
+                tal:content="string:${view/packages_summary_24h/built_packages_percentage} %"
+              >
+                0%
+              </span>
             </dd>
           </div>
           <div class="description-list__item">
             <dt>Failed to build</dt>
-            <dd tal:content="view/packages_summary_24h/failed_to_build_packages_count/fmt:intcomma"> 0 </dd>
+            <dd
+              tal:content="view/packages_summary_24h/failed_to_build_packages_count/fmt:intcomma"
+            >
+              0
+            </dd>
           </div>
           <div class="description-list__item">
             <dt>Failed to upload</dt>
-            <dd tal:content="view/packages_summary_24h/failed_to_upload_packages_count/fmt:intcomma"> 0 </dd>
+            <dd
+              tal:content="view/packages_summary_24h/failed_to_upload_packages_count/fmt:intcomma"
+            >
+              0
+            </dd>
           </div>
         </div>
 
@@ -244,13 +261,17 @@
                 Next milestone
               </span>
               <span
-              class="p-heading--3 u-text--muted"
-              tal:condition="not: view/next_milestone">
+                class="p-heading--3 u-text--muted"
+                tal:condition="not: view/next_milestone"
+              >
                 No next milestone
               </span>
             </dd>
           </div>
-          <div class="description-list__item" tal:condition="view/next_milestone">
+          <div
+            class="description-list__item"
+            tal:condition="view/next_milestone"
+          >
             <dt>Expected</dt>
             <dd tal:content="view/next_milestone/dateexpected/fmt:displaydate">
               Expected
@@ -260,7 +281,10 @@
       </dl>
     </div>
     <div class="links-mobile">
-      <div tal:replace="structure context/@@+vanilla-distroseries-summary-links" />
+      <hr class="p-rule" />
+      <div
+        tal:replace="structure context/@@+vanilla-distroseries-summary-links"
+      />
     </div>
   </section>
 </tal:root>

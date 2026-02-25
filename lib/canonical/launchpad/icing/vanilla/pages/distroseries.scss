@@ -3,7 +3,7 @@
   grid-template-columns: 1fr;
   grid-template-areas:
     "title"
-    "statistics"
+    "stats"
     "links-mobile";
   gap: var(--dimension-spacing-block-l);
 
@@ -11,7 +11,7 @@
     grid-area: title;
   }
   .statistics {
-    grid-area: statistics;
+    grid-area: stats;
   }
 
   .links-mobile {
@@ -28,7 +28,7 @@
     grid-template-columns: repeat(4, 1fr);
     grid-template-areas:
       "title title title links"
-      "statistics statistics statistics statistics";
+      "stats stats stats stats";
 
     .links {
       display: block;
@@ -60,7 +60,7 @@
   .summary-layout {
     grid-template-columns: repeat(8, 1fr);
     grid-template-areas:
-      "title title statistics statistics statistics statistics statistics statistics"
-      "links links statistics statistics statistics statistics statistics statistics";
+      "title title stats stats stats stats stats stats"
+      "links links stats stats stats stats stats stats";
   }
 }

@@ -4,15 +4,7 @@
   column-gap: var(--dimension-spacing-inline-xl);
   row-gap: var(--dimension-spacing-block-l);
 
-  /* Target ANY last child (stat or group) to remove the bottom border in mobile/medium */
-  @media (max-width: 1036px) {
-    > *:last-child {
-      border-bottom: none;
-      padding-bottom: 0;
-    }
-  }
-
-  @media (min-width: 621px) and (max-width: 1036px) {
+  @media (621px <= width <= 1036px) {
     grid-template-columns: repeat(3, 1fr);
   }
 
@@ -42,16 +34,18 @@
     grid-template-columns: subgrid;
     row-gap: var(--dimension-spacing-inline-xl);
 
-    border-bottom: 1px solid var(--color-border-low-contrast);
-    padding-bottom: var(--dimension-spacing-block-l);
+    @media (max-width: 1036px) {
+      &:not(:last-child) {
+        border-bottom: 1px solid var(--color-border-low-contrast);
+        padding-bottom: var(--dimension-spacing-block-l);
+      }
+    }
 
     @media (min-width: 1037px) {
       grid-column: auto;
       display: flex;
       flex-direction: column;
       gap: var(--dimension-spacing-block-minimum);
-
-      border-bottom: none;
       position: relative;
 
       /* Bridging the column gaps */
