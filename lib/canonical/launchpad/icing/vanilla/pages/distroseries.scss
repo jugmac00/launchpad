@@ -41,7 +41,7 @@
   }
 }
 
-@media (min-width: 621px) and (max-width: 1036px) {
+@media (621px <= width <= 1036px) {
   .summary-layout {
     .statistics {
       display: grid;
