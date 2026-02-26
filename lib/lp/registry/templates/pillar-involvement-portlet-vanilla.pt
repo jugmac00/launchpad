@@ -7,7 +7,7 @@
   </tal:comment>
   <h2 class="p-heading--5">Get Involved</h2>
 
-  <ul class="p-list u-no-margin" aria-owns="involvement-1 involvement-2 involvement-3 involvement-4">
+  <ul class="p-list u-no-margin">
     <li class="p-list__item" tal:repeat="link view/enabled_links">
       <a tal:attributes="href link/url" tal:content="link/text">link/text</a>
     </li>
