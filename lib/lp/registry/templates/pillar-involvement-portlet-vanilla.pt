@@ -12,7 +12,7 @@
       <a tal:attributes="href link/url" tal:content="link/text">link/text</a>
     </li>
     <tal:disabled repeat="link view/visible_disabled_links">
-      <li class="list__item is-crossed" tal:condition="not: link/enabled" tal:attributes="title string:Launchpad needs to know where the user can ${link/text/lower}" class="disabled">
+      <li class="list__item is-crossed" tal:attributes="title string:Launchpad needs to know where the user can ${link/text/lower}" class="disabled">
         <span tal:content="link/text">link/text</span>
       </li>
     </tal:disabled>
