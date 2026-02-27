@@ -12,6 +12,7 @@ from datetime import datetime, timedelta, timezone
 
 from lp.bugs.browser.bugtask import BugTaskImportance, BugTaskStatus
 from lp.bugs.interfaces.bugtasksearch import BugTaskSearchParams
+from lp.bugs.model.bugtask import BugTaskSet
 from lp.buildmaster.enums import BuildStatus
 from lp.layers import VanillaLayer, setAdditionalLayer
 from lp.registry.browser import MilestoneOverlayMixin
@@ -23,13 +24,34 @@ from lp.services.webapp.publisher import LaunchpadView
 from lp.soyuz.model.binarypackagebuild import BinaryPackageBuild
 
 
+class ChipColor:
+    """Vanilla chip color CSS classes.
+
+    See: https://vanillaframework.io/docs/patterns/chip#colour-coding
+    """
+
+    NEUTRAL = "p-chip"
+    POSITIVE = "p-chip--positive"
+    INFORMATION = "p-chip--information"
+    CAUTION = "p-chip--caution"
+    NEGATIVE = "p-chip--negative"
+
+
+STATUS_CHIP_COLORS = {
+    SeriesStatus.CURRENT: ChipColor.POSITIVE,
+    SeriesStatus.SUPPORTED: ChipColor.POSITIVE,
+    SeriesStatus.DEVELOPMENT: ChipColor.INFORMATION,
+    SeriesStatus.FROZEN: ChipColor.INFORMATION,
+    SeriesStatus.FUTURE: ChipColor.INFORMATION,
+    SeriesStatus.EXPERIMENTAL: ChipColor.CAUTION,
+    SeriesStatus.OBSOLETE: ChipColor.CAUTION,
+}
+
+
 class VanillaDistroSeriesView(
     LaunchpadView, MilestoneOverlayMixin, DerivedDistroSeriesMixin
 ):
     """View for the vanilla distroseries page."""
-
-    def __init__(self, context, request):
-        super().__init__(context, request)
 
     def initialize(self):
         super().initialize()
@@ -46,61 +68,39 @@ class VanillaDistroSeriesView(
 
     @property
     def status_chip_color(self):
+        """Return the status chip color."""
+        return STATUS_CHIP_COLORS.get(
+            self.context.status,
+            ChipColor.INFORMATION,
+        )
+
+    def _search_bug_tasks(self, **kwargs):
+        """Search bug tasks with eager loading disabled.
+
+        Since we only need counts, we use ``_noprejoins`` to skip the
+        expensive eager loading that ``searchTasks`` performs by default.
         """
-        Return the status chip color.
-        See: https://vanillaframework.io/docs/patterns/chip#colour-coding
-        """
-        if self.context.status in [
-            SeriesStatus.CURRENT,
-            SeriesStatus.SUPPORTED,
-        ]:
-            return "p-chip--positive"
-
-        if self.context.status in [
-            SeriesStatus.DEVELOPMENT,
-            SeriesStatus.FROZEN,
-            SeriesStatus.FUTURE,
-        ]:
-            return "p-chip--information"
-
-        if self.context.status in [
-            SeriesStatus.EXPERIMENTAL,
-            SeriesStatus.OBSOLETE,
-        ]:
-            return "p-chip--caution"
-
-        return "p-chip--information"
+        params = BugTaskSearchParams(
+            orderby="-datecreated",
+            omit_dupes=True,
+            user=self.user,
+            **kwargs,
+        )
+        params.setDistroSeries(self.context)
+        return BugTaskSet().search(params, _noprejoins=True)
 
     @property
     def bugs_summary(self):
         """Return the bugs summary (critical, in progress, triaged counts)."""
-
-        importance_params = BugTaskSearchParams(
+        critical_bugs = self._search_bug_tasks(
             importance=BugTaskImportance.CRITICAL,
-            orderby="-datecreated",
-            omit_dupes=True,
-            user=self.user,
         )
-        importance_params.setDistroSeries(self.context)
-        critical_bugs = self.context.searchTasks(importance_params)
-
-        inprogress_params = BugTaskSearchParams(
+        inprogress_bugs = self._search_bug_tasks(
             status=BugTaskStatus.INPROGRESS,
-            orderby="-datecreated",
-            omit_dupes=True,
-            user=self.user,
         )
-        inprogress_params.setDistroSeries(self.context)
-        inprogress_bugs = self.context.searchTasks(inprogress_params)
-
-        triaged_params = BugTaskSearchParams(
+        triaged_bugs = self._search_bug_tasks(
             status=BugTaskStatus.TRIAGED,
-            orderby="-datecreated",
-            omit_dupes=True,
-            user=self.user,
         )
-        triaged_params.setDistroSeries(self.context)
-        triaged_bugs = self.context.searchTasks(triaged_params)
 
         return {
             "critical_bugs_count": critical_bugs.count(),
