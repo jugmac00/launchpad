@@ -10,9 +10,11 @@ __all__ = [
 
 from datetime import datetime, timedelta, timezone
 
+from zope.component import getUtility
+
 from lp.bugs.browser.bugtask import BugTaskImportance, BugTaskStatus
+from lp.bugs.interfaces.bugtask import IBugTaskSet
 from lp.bugs.interfaces.bugtasksearch import BugTaskSearchParams
-from lp.bugs.model.bugtask import BugTaskSet
 from lp.buildmaster.enums import BuildStatus
 from lp.layers import VanillaLayer, setAdditionalLayer
 from lp.registry.browser import MilestoneOverlayMixin
@@ -87,7 +89,7 @@ class VanillaDistroSeriesView(
             **kwargs,
         )
         params.setDistroSeries(self.context)
-        return BugTaskSet().search(params, _noprejoins=True)
+        return getUtility(IBugTaskSet).search(params, _noprejoins=True)
 
     @property
     def bugs_summary(self):
