@@ -9,6 +9,7 @@ __all__ = [
 
 
 from datetime import datetime, timedelta, timezone
+from enum import Enum
 
 from zope.component import getUtility
 
@@ -26,7 +27,7 @@ from lp.services.webapp.publisher import LaunchpadView
 from lp.soyuz.model.binarypackagebuild import BinaryPackageBuild
 
 
-class ChipColor:
+class ChipColor(str, Enum):
     """Vanilla chip color CSS classes.
 
     See: https://vanillaframework.io/docs/patterns/chip#colour-coding
@@ -37,6 +38,9 @@ class ChipColor:
     INFORMATION = "p-chip--information"
     CAUTION = "p-chip--caution"
     NEGATIVE = "p-chip--negative"
+
+    def __str__(self) -> str:
+        return self.value
 
 
 STATUS_CHIP_COLORS = {
@@ -69,7 +73,7 @@ class VanillaDistroSeriesView(
         )
 
     @property
-    def status_chip_color(self):
+    def status_chip_color(self) -> ChipColor:
         """Return the status chip color."""
         return STATUS_CHIP_COLORS.get(
             self.context.status,
